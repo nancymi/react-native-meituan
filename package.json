@@ -12,7 +12,9 @@
     "react-native": "0.41.2",
     "react-native-md-textinput": "^2.0.4",
     "react-native-navigator-router": "^0.2.1",
+    "react-native-picker": "^4.0.18",
     "react-native-tab-navigator": "^0.3.3",
+    "react-native-xml2js": "^1.0.2",
     "react-xml-parser": "^1.0.2"
   },
   "devDependencies": {
