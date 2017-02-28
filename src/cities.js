@@ -64,7 +64,7 @@ export default class List extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let data = this._getCityList();
         for (let j = 0; j < letters.length; j++) {
             let each = []
@@ -78,9 +78,7 @@ export default class List extends Component {
             _city.name = each
             city.push(_city)
         }
-    }
 
-    componentDidMount() {
         var dataBlob = {};
         var sectionIDs = [];
         var rowIDs = [];
