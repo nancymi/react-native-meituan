@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 import X2JS from 'x2js';
+import data from '../assets/json/city.json';
 
 import {
     AppRegistry,
@@ -64,20 +65,37 @@ export default class List extends Component {
         }
     }
 
-    componentDidMount() {
-        let data = this._getCityList();
-        for (let j = 0; j < letters.length; j++) {
-            let each = []
-            for (let i = 0; i < data.length; i++) {
-                if (letters[j] == data[i].id.substr(0, 1)) {
-                    each.push(data[i].name);
+    componentWillMount() {
+        // This is local data
+        for(let j = 0;j<letters.length;j++){
+            let each =[]
+            for(let i = 0;i<data.length;i++){
+                if(letters[j] == data.id.substr(0,1) ){
+                    each.push(data.name);
                 }
             }
-            let _city = {}
+            let _city={}
             _city.index = letters[j]
             _city.name = each
             city.push(_city)
         }
+    }
+
+    componentDidMount() {
+        // This is remote data
+        // let data = this._getCityList();
+        // for (let j = 0; j < letters.length; j++) {
+        //     let each = []
+        //     for (let i = 0; i < data.length; i++) {
+        //         if (letters[j] == data[i].id.substr(0, 1)) {
+        //             each.push(data[i].name);
+        //         }
+        //     }
+        //     let _city = {}
+        //     _city.index = letters[j]
+        //     _city.name = each
+        //     city.push(_city)
+        // }
 
         var dataBlob = {};
         var sectionIDs = [];
