@@ -1,6 +1,9 @@
 /**
  * Created by ncyang on 26/02/2017.
  */
+
+import X2JS from 'x2js';
+
 function getMoviesFromApiAsync(callback) {
     return fetch('http://www.meituan.com/api/v1/divisions')
         .then((response) => {

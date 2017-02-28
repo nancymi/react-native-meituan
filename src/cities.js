@@ -3,7 +3,7 @@
  */
 import React, {Component} from 'react';
 import _ from 'lodash';
-import data from '../assets/json/city.json';
+import X2JS from 'x2js';
 
 import {
     AppRegistry,
@@ -21,13 +21,12 @@ import {
 
 const {width, height} = Dimensions.get('window')
 const SECTIONHEIGHT = 30, ROWHEIGHT = 40
-//这是利用lodash的range和数组的map画出26个英文字母
 const letters = _
     .range('A'.charCodeAt(0), 'Z'.charCodeAt(0) + 1)
     .map(n => String.fromCharCode(n).substr(0))
-_.pull(letters, 'O', 'V')//去掉o和V,这两个下面没有城市
-let city = []//城市的数组
-var totalheight = [];//每个字母对应的城市和字母的总高度
+_.pull(letters, 'O', 'V')
+let city = []
+var totalheight = [];
 var that = null
 export default class List extends Component {
     constructor(props) {
@@ -49,13 +48,29 @@ export default class List extends Component {
         that = this
     }
 
+    async _getCityList() {
+        let x2js = new X2JS();
+        let url = 'http://www.meituan.com/api/v1/divisions/';
+        try{
+            let response = await fetch(url);
+            let data = await response.text();
+            let nameList = Array.from(x2js.xml2js(data).response.divisions.division);
+            nameList.sort((a, b) => (a.id.localeCompare(b.id)));
+            let c = _.groupBy(nameList, x => x.id[0]);
+            console.log(nameList);
+            return c;
+        } catch(error){
+            console.log(error);
+        }
+    }
+
     componentWillMount() {
-        //TODO 把城市放到对应的字母中
+        let data = this._getCityList();
         for (let j = 0; j < letters.length; j++) {
             let each = []
-            for (let i = 0; i < data.CITIES.length; i++) {
-                if (letters[j] == data.CITIES[i].name_en.substr(0, 1)) {
-                    each.push(data.CITIES[i].name);
+            for (let i = 0; i < data.length; i++) {
+                if (letters[j] == data.id.substr(0, 1)) {
+                    each.push(data.name);
                 }
             }
             let _city = {}
@@ -66,7 +81,6 @@ export default class List extends Component {
     }
 
     componentDidMount() {
-        //TODO 改成网络请求
         var dataBlob = {};
         var sectionIDs = [];
         var rowIDs = [];
@@ -82,8 +96,6 @@ export default class List extends Component {
                 rowIDs[ii].push(rowName)
                 dataBlob[rowName] = city[ii].name[j]
             }
-            //计算每个字母和下面城市的总高度，递增放到数组中
-            // var eachheight = this.props.sectionHeight+this.props.rowHeight*newcity.length
             var eachheight = SECTIONHEIGHT+ROWHEIGHT*city[ii].name.length
             totalheight.push(eachheight)
         }
@@ -113,7 +125,7 @@ export default class List extends Component {
             </View>
         )
     }
-    // render ringht index Letters
+
     renderLetters(letter, index) {
         return (
             <TouchableOpacity key={index} activeOpacity={0.6} onPress={()=>{this.scrollTo(index)}}>
@@ -124,12 +136,10 @@ export default class List extends Component {
         )
     }
 
-    //回调改变显示的城市
     changedata = (cityname) => {
         this.props.changeCity(cityname)
     }
 
-    //touch right indexLetters, scroll the left
     scrollTo = (index) => {
         let position = 0;
         for (let i = 0; i < index; i++) {
