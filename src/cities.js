@@ -51,7 +51,7 @@ export default class List extends Component {
     async _getCityList() {
         let x2js = new X2JS();
         let url = 'http://www.meituan.com/api/v1/divisions/';
-        try{
+        try {
             let response = await fetch(url);
             let data = await response.text();
             let nameList = Array.from(x2js.xml2js(data).response.divisions.division);
@@ -59,7 +59,7 @@ export default class List extends Component {
             let c = _.groupBy(nameList, x => x.id[0]);
             return c;
             console.log(nameList);
-        } catch(error){
+        } catch (error) {
             console.log(error);
         }
     }
@@ -83,22 +83,22 @@ export default class List extends Component {
         var sectionIDs = [];
         var rowIDs = [];
 
-        for(let ii = 0;ii<city.length;ii++){
+        for (let ii = 0; ii < city.length; ii++) {
             var sectionName = 'Section ' + ii;
             sectionIDs.push(sectionName)
             dataBlob[sectionName] = letters[ii]
             rowIDs[ii] = [];
 
-            for(let j = 0;j<city[ii].name.length;j++){
+            for (let j = 0; j < city[ii].name.length; j++) {
                 var rowName = ii + '-' + j;
                 rowIDs[ii].push(rowName)
                 dataBlob[rowName] = city[ii].name[j]
             }
-            var eachheight = SECTIONHEIGHT+ROWHEIGHT*city[ii].name.length
+            var eachheight = SECTIONHEIGHT + ROWHEIGHT * city[ii].name.length
             totalheight.push(eachheight)
         }
         this.setState({
-            dataSource:this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
+            dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs)
         })
     }
 
@@ -151,7 +151,7 @@ export default class List extends Component {
     render() {
         return (
             <View style={{height: Dimensions.get('window').height,marginBottom:10}}>
-                <View style={{height: 50, width: 200}} >
+                <View style={{height: 50, width: 200}}>
 
                 </View>
                 <ListView
