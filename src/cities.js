@@ -57,8 +57,8 @@ export default class List extends Component {
             let nameList = Array.from(x2js.xml2js(data).response.divisions.division);
             nameList.sort((a, b) => (a.id.localeCompare(b.id)));
             let c = _.groupBy(nameList, x => x.id[0]);
-            console.log(nameList);
             return c;
+            console.log(nameList);
         } catch(error){
             console.log(error);
         }
@@ -69,8 +69,8 @@ export default class List extends Component {
         for (let j = 0; j < letters.length; j++) {
             let each = []
             for (let i = 0; i < data.length; i++) {
-                if (letters[j] == data.id.substr(0, 1)) {
-                    each.push(data.name);
+                if (letters[j] == data[i].id.substr(0, 1)) {
+                    each.push(data[i].name);
                 }
             }
             let _city = {}
@@ -153,6 +153,9 @@ export default class List extends Component {
     render() {
         return (
             <View style={{height: Dimensions.get('window').height,marginBottom:10}}>
+                <View style={{height: 50, width: 200}} >
+
+                </View>
                 <ListView
                     contentContainerStyle={styles.contentContainer}
                     ref={listView => this._listView = listView}
